@@ -17,6 +17,7 @@ native plugin manager (`vim.pack`) and native LSP client (`vim.lsp.config` / `vi
 
 | File | Contents |
 | --- | --- |
+| [getting-started.md](getting-started.md) | Hands-on tour: first launch, finding keys, files, search, code intelligence, git, troubleshooting, exploring the config |
 | [core.md](core.md) | Editor options, autocommands, shared icons |
 | [keymaps.md](keymaps.md) | Every keybinding, grouped by area |
 | [plugins.md](plugins.md) | Each plugin: what it does and how it is configured |

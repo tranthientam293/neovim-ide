@@ -17,6 +17,7 @@ LSP client (`vim.lsp.config` / `vim.lsp.enable`). No lazy.nvim, no distro.
 | Topic | Wiki page |
 | --- | --- |
 | Overview, requirements, layout, load order, managing plugins | [Home](https://github.com/tranthientam293/neovim-ide/wiki) |
+| Hands-on tour of the setup (start here) | [Getting Started](https://github.com/tranthientam293/neovim-ide/wiki/getting-started) |
 | Editor options, autocommands, icons | [Core](https://github.com/tranthientam293/neovim-ide/wiki/core) |
 | Every keybinding | [Keymaps](https://github.com/tranthientam293/neovim-ide/wiki/keymaps) |
 | Plugins and how each one is configured | [Plugins](https://github.com/tranthientam293/neovim-ide/wiki/plugins) |
@@ -37,7 +38,8 @@ git clone https://github.com/tranthientam293/neovim-ide.git $env:LOCALAPPDATA\nv
 ```
 
 Then start `nvim`. Plugins, language servers and parsers install automatically on first launch.
-Press `Space` to see available keymaps.
+Press `Space` to see available keymaps, then follow the
+[Getting Started](https://github.com/tranthientam293/neovim-ide/wiki/getting-started) tour.
 
 ## Contributing to the docs
 
