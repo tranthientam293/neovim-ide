@@ -70,10 +70,13 @@ don't break startup), concatenates lists (deduplicated and sorted) and merges th
 
 ## lsp.lua
 
+Loaded when the first file is opened, or on `:Mason` (see [Plugins → Load order](plugins.md#load-order)).
+
 1. **Install** — `mason.setup()`; `mason-lspconfig` with `automatic_enable = false` (servers are enabled
    explicitly); `mason-tool-installer` ensures every `servers` + `tools` entry is installed on start
-   (no auto-update).
-2. **Shared config** — `vim.lsp.config('*', { capabilities = blink capabilities })`.
+   (no auto-update). If the module loads after `VimEnter`, the check is started manually.
+2. **Shared config** — `:packadd blink.cmp`; its `plugin/` file runs
+   `vim.lsp.config('*', { capabilities = <blink capabilities> })`.
 3. **Enable** — `vim.lsp.enable(langs.servers)`. Final config per server =
    nvim-lspconfig `lsp/<name>.lua` ⊕ `vim.lsp.config('*')` ⊕ `after/lsp/<name>.lua`.
 4. **Diagnostics UI**

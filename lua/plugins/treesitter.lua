@@ -22,4 +22,5 @@ vim.api.nvim_create_autocmd('FileType', {
 require('treesitter-context').setup({ max_lines = 3 })
 
 -- Auto close and auto rename paired JSX/HTML tags
+require('core.lazy').packadd('nvim-ts-autotag')
 require('nvim-ts-autotag').setup({})

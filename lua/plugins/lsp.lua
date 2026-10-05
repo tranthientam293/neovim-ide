@@ -1,19 +1,25 @@
+-- Loaded when the first file is opened (or on :Mason)
 local langs = require('langs')
+
+-- blink.cmp's plugin/ file adds its completion capabilities to every server (vim.lsp.config('*')),
+-- so it must be loaded before any server starts.
+require('core.lazy').packadd('blink.cmp')
 
 -- Install language servers + tools ------------------------------------------
 require('mason').setup()
 require('mason-lspconfig').setup({ automatic_enable = false }) -- servers are enabled explicitly below
-require('mason-tool-installer').setup({
+local mti = require('mason-tool-installer')
+mti.setup({
   ensure_installed = vim.list_extend(vim.deepcopy(langs.servers), langs.tools),
   auto_update = false,
   run_on_start = true,
 })
+-- mason-tool-installer checks on VimEnter; when loaded later than that, check now
+if vim.v.vim_did_enter == 1 then
+  mti.run_on_start()
+end
 
--- Defaults shared by every server (per-server overrides live in after/lsp/<name>.lua)
-vim.lsp.config('*', {
-  capabilities = require('blink.cmp').get_lsp_capabilities(),
-})
-
+-- Per-server overrides live in after/lsp/<name>.lua
 vim.lsp.enable(langs.servers)
 
 -- Diagnostics ----------------------------------------------------------------

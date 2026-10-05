@@ -1,3 +1,11 @@
+-- Loaded on first InsertEnter / CmdlineEnter
+local lazy = require('core.lazy')
+lazy.packadd('blink.cmp') -- already loaded if a file (and so plugins/lsp.lua) was opened first
+lazy.packadd('friendly-snippets')
+
+-- Auto close brackets and quotes
+require('nvim-autopairs').setup({ check_ts = true })
+
 require('blink.cmp').setup({
   -- VSCode-like: <CR>/<Tab> accept, <C-Space> opens the menu, <Up>/<Down> or <C-n>/<C-p> to move
   keymap = {

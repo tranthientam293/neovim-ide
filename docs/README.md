@@ -32,7 +32,7 @@ native plugin manager (`vim.pack`) and native LSP client (`vim.lsp.config` / `vi
 | `tree-sitter` CLI + a C compiler | `nvim-treesitter` (main branch) compiles parsers locally |
 | Node.js | `vtsls`, `eslint`, `prettierd` (installed by Mason) |
 | `ripgrep` (`rg`) | Snacks grep picker |
-| A truecolor terminal (e.g. Windows Terminal) | `termguicolors`, transparent themes, undercurl |
+| A truecolor terminal (e.g. Windows Terminal) | `termguicolors`, transparent theme, undercurl |
 
 On first launch `vim.pack` installs the plugins, Mason installs the language servers/tools, and
 treesitter compiles the parsers (all asynchronously — give it a minute).
@@ -49,19 +49,22 @@ nvim/
 │   │   ├── options.lua      Editor options (vim.o / vim.opt)
 │   │   ├── keymaps.lua      Leader key + plugin-independent keymaps
 │   │   ├── autocmds.lua     Generic autocommands
-│   │   └── icons.lua        Shared Nerd Font icons (diagnostics)
+│   │   ├── icons.lua        Shared Nerd Font icons (diagnostics)
+│   │   └── lazy.lua         Lazy-loading helpers (on event, after UI, stub command, packadd)
 │   ├── langs/
 │   │   ├── init.lua         Registry: merges every language spec in this folder
 │   │   ├── lua.lua          Lua: lua_ls + stylua
 │   │   └── typescript.lua   JS/TS: vtsls + eslint + prettier
 │   └── plugins/
-│       ├── init.lua         vim.pack.add({...}) + requires each plugin module
-│       ├── colorscheme.lua  Themes, persisted theme choice, undercurl diagnostics
-│       ├── ui.lua           Snacks (picker/explorer/terminal), bufferline, which-key
+│       ├── init.lua         vim.pack.add({...}) + decides when each plugin module loads
+│       ├── colorscheme.lua  catppuccin mocha (transparent), undercurl diagnostics
+│       ├── ui.lua           Snacks (picker/explorer/terminal/notifications)
+│       ├── bufferline.lua   Buffer tabs
+│       ├── which-key.lua    Keymap hints
 │       ├── statusline.lua   lualine
 │       ├── treesitter.lua   Parsers, highlighting, indent, folds, sticky context, autotag
-│       ├── editor.lua       autopairs, ts-comments, gitsigns, trouble
-│       ├── completion.lua   blink.cmp
+│       ├── editor.lua       ts-comments, gitsigns, trouble
+│       ├── completion.lua   blink.cmp, autopairs
 │       ├── lsp.lua          Mason, server enabling, diagnostics UI, LSP keymaps
 │       ├── format.lua       conform.nvim (manual formatting)
 │       └── lint.lua         nvim-lint (non-LSP linters)
@@ -74,25 +77,25 @@ nvim/
 
 ## Load order
 
+Plugins are set up in stages so the first screen only waits for what it shows. The helpers are in
+`lua/core/lazy.lua`; see [Plugins → Load order](plugins.md#load-order) for details.
+
 ```
 init.lua
  ├─ core.autocmds
  ├─ core.options
- ├─ core.keymaps          (sets <leader> = <Space> before any plugin maps keys)
- └─ plugins               (plugins/init.lua)
-     ├─ vim.pack.add(...)  install/load all plugins
-     ├─ plugins.colorscheme
-     ├─ plugins.ui         (Snacks must load before anything calls Snacks.*)
-     ├─ plugins.statusline
-     ├─ plugins.treesitter
-     ├─ plugins.editor
-     ├─ plugins.completion (blink before lsp — lsp.lua uses its capabilities)
-     ├─ plugins.lsp
-     ├─ plugins.format
-     └─ plugins.lint
+ ├─ core.keymaps            (sets <leader> = <Space> before any plugin maps keys)
+ └─ plugins                 (plugins/init.lua)
+     ├─ vim.pack.add(...)    put plugins on the runtimepath (blink.cmp, friendly-snippets,
+     │                       nvim-ts-autotag are only registered, :packadd-ed later)
+     │
+     ├─ 1. startup           plugins.colorscheme, plugins.ui (Snacks)
+     ├─ 2. after first frame plugins.statusline, plugins.bufferline, plugins.which-key
+     ├─ 3. first file opened plugins.treesitter → lsp → format → lint → editor   (also on :Mason)
+     └─ 4. first insert/cmd  plugins.completion (blink.cmp, autopairs)
 ```
 
-`lua/langs/init.lua` is required lazily by `treesitter.lua`, `lsp.lua`, `format.lua` and `lint.lua`;
+`lua/langs/init.lua` is required by `treesitter.lua`, `lsp.lua`, `format.lua` and `lint.lua`;
 Lua's module cache means the folder is scanned only once.
 
 ## Managing plugins

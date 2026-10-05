@@ -21,7 +21,7 @@ key and options are in place when plugins initialise.
 | `numberwidth` | `4` | Gutter width for line numbers |
 | `signcolumn` | `yes` | Always reserve the sign column so text doesn't shift when diagnostics/git signs appear |
 | `cursorline` | `true` | Highlight the current line |
-| `termguicolors` | `true` | 24-bit colour (required by the themes) |
+| `termguicolors` | `true` | 24-bit colour (required by the theme) |
 | `wrap` | `false` | No soft wrap by default (toggle with `<leader>lw`) |
 | `linebreak` | `true` | When wrap is on, break at word boundaries |
 | `breakindent` | `true` | Wrapped lines keep their indentation |
@@ -75,7 +75,7 @@ Other autocommands live with the feature they belong to:
 
 | Where | Event | Purpose |
 | --- | --- | --- |
-| `plugins/colorscheme.lua` | `ColorScheme` | Turn diagnostic underlines into undercurls; persist chosen theme |
+| `plugins/colorscheme.lua` | `ColorScheme` | Turn diagnostic underlines into undercurls |
 | `plugins/treesitter.lua` | `FileType` | Start treesitter highlighting, indent and folding |
 | `plugins/lsp.lua` | `LspAttach` | Buffer-local LSP keymaps and reference highlighting |
 | `plugins/lint.lua` | `BufReadPost`, `BufWritePost`, `InsertLeave` | Run nvim-lint |
@@ -86,7 +86,7 @@ Shared Nerd Font glyphs for diagnostic severities (`ERROR`, `WARN`, `INFO`, `HIN
 
 - the sign column and virtual text (`plugins/lsp.lua`)
 - the lualine diagnostics component (`plugins/statusline.lua`)
-- the bufferline diagnostics indicator (`plugins/ui.lua`)
+- the bufferline diagnostics indicator (`plugins/bufferline.lua`)
 
 Change an icon here and it updates everywhere.
 
@@ -94,3 +94,9 @@ Change an icon here and it updates everywhere.
 
 Sets `<leader>` and `<localleader>` to `<Space>` and defines the plugin-independent mappings.
 See [keymaps.md](keymaps.md) for the full list.
+
+## lazy.lua
+
+Small helpers that `plugins/init.lua` and the plugin modules use to set up plugins only when they
+are first needed: `on` (first time an event fires), `after_ui` (after the first frame), `cmd` (stub
+command), `packadd` and `once`. See [Plugins → Load order](plugins.md#load-order).

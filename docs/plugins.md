@@ -5,40 +5,76 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 
 ## Overview
 
-| Plugin | Purpose | Configured in |
-| --- | --- | --- |
-| catppuccin, tokyonight, kanagawa, gruvbox, solarized-osaka | Colorschemes | `colorscheme.lua` |
-| snacks.nvim | Picker, explorer, terminal, indent guides, notifications, input, big-file handling | `ui.lua` |
-| bufferline.nvim | Buffers shown as tabs | `ui.lua` |
-| which-key.nvim | Keymap hints popup | `ui.lua` |
-| nvim-web-devicons | File-type icons | (used by others) |
-| lualine.nvim | Statusline | `statusline.lua` |
-| nvim-treesitter (`main`) | Parsers, highlighting, indent, folds | `treesitter.lua` |
-| nvim-treesitter-context | Sticky scroll | `treesitter.lua` |
-| nvim-ts-autotag | Auto close/rename HTML/JSX tags | `treesitter.lua` |
-| nvim-autopairs | Auto-close brackets and quotes | `editor.lua` |
-| ts-comments.nvim | Correct comment strings in JSX/TSX | `editor.lua` |
-| gitsigns.nvim | Git signs, hunks, blame | `editor.lua` |
-| trouble.nvim | Problems panel, symbols outline | `editor.lua` |
-| mason.nvim, mason-lspconfig, mason-tool-installer | Install servers & tools | `lsp.lua` |
-| nvim-lspconfig | Default server configs (`lsp/<name>.lua`) | `lsp.lua` + `after/lsp/` |
-| blink.cmp (`1.*`) + friendly-snippets | Completion & snippets | `completion.lua` |
-| conform.nvim | Formatting | `format.lua` |
-| nvim-lint | Non-LSP linters | `lint.lua` |
+| Plugin | Purpose | Configured in | Loaded |
+| --- | --- | --- | --- |
+| catppuccin | Colorscheme (mocha) | `colorscheme.lua` | startup |
+| snacks.nvim | Picker, explorer, terminal, indent guides, notifications, input, big-file handling | `ui.lua` | startup |
+| nvim-web-devicons | File-type icons | (used by others) | startup |
+| lualine.nvim | Statusline | `statusline.lua` | after first frame |
+| bufferline.nvim | Buffers shown as tabs | `bufferline.lua` | after first frame |
+| which-key.nvim | Keymap hints popup | `which-key.lua` | after first frame |
+| nvim-treesitter (`main`) | Parsers, highlighting, indent, folds | `treesitter.lua` | first file |
+| nvim-treesitter-context | Sticky scroll | `treesitter.lua` | first file |
+| nvim-ts-autotag | Auto close/rename HTML/JSX tags | `treesitter.lua` | first file (`:packadd`) |
+| ts-comments.nvim | Correct comment strings in JSX/TSX | `editor.lua` | first file |
+| gitsigns.nvim | Git signs, hunks, blame | `editor.lua` | first file |
+| trouble.nvim | Problems panel, symbols outline | `editor.lua` | first `:Trouble` |
+| mason.nvim, mason-lspconfig, mason-tool-installer | Install servers & tools | `lsp.lua` | first file or `:Mason` |
+| nvim-lspconfig | Default server configs (`lsp/<name>.lua`) | `lsp.lua` + `after/lsp/` | first file |
+| conform.nvim | Formatting | `format.lua` | first file |
+| nvim-lint | Non-LSP linters | `lint.lua` | first file |
+| blink.cmp (`1.*`) | Completion | `completion.lua` | `:packadd` on first file (LSP capabilities), setup on first insert |
+| friendly-snippets | Snippet collection | `completion.lua` | first insert (`:packadd`) |
+| nvim-autopairs | Auto-close brackets and quotes | `completion.lua` | first insert |
 
+## Load order
+
+Everything is installed by `vim.pack.add` in `plugins/init.lua`, but each module is set up only when
+it is first needed. That keeps an empty start at roughly 220 ms instead of about 620 ms. The helpers are
+in `lua/core/lazy.lua`:
+
+| Helper | What it does |
+| --- | --- |
+| `lazy.on(events, loader)` | Runs `loader` the first time one of `events` fires |
+| `lazy.after_ui(loader)` | Runs `loader` right after the first screen is drawn (`UIEnter` + `vim.schedule`) |
+| `lazy.cmd(name, loader)` | Defines a stub `:name` command that runs `loader` and then re-runs the real command |
+| `lazy.packadd(name)` | `:packadd`s a plugin that was registered but not loaded (once) |
+| `lazy.once(fn)` | Wraps `fn` so it only runs once |
+
+A *loader* is either a module name (`'plugins.statusline'`) or a function.
+
+| Stage | Trigger | Modules |
+| --- | --- | --- |
+| 1 | startup | `colorscheme`, `ui` (Snacks) |
+| 2 | after the first frame | `statusline`, `bufferline`, `which-key` |
+| 3 | `BufReadPre` / `BufNewFile`, or `:Mason` | `treesitter`, `lsp`, `format`, `lint`, `editor` |
+| 4 | `InsertEnter` / `CmdlineEnter` | `completion` |
+
+Notes:
+- **No layout jump when stage 2 loads**: `plugins/init.lua` reserves a blank statusline and tabline at
+  startup.
+- **`nvim file` still works**: `BufReadPre` fires for files given on the command line, so stage 3
+  loads before that buffer's `FileType` event and treesitter, LSP and lint all attach to it. Snacks
+  `quickfile` shows the file with highlighting as early as possible.
+- **Registered but not loaded**: blink.cmp, friendly-snippets and nvim-ts-autotag are added with
+  `{ load = function() end }`, which keeps their `plugin/` files from running at startup. blink.cmp is
+  `:packadd`ed by `lsp.lua` because its `plugin/` file adds completion capabilities to every server,
+  and that has to happen before any server starts.
+- **Late Mason check**: mason-tool-installer normally checks for missing tools on `VimEnter`. When
+  `lsp.lua` loads after that, it starts the check itself.
+- **Adding a plugin**: put its `setup()` in the module for the stage where it's first needed. If its
+  `plugin/` file is slow, register it in the second `vim.pack.add` call and `lazy.packadd()` it before
+  `require`.
 ---
 
 ## colorscheme.lua
 
-- **Default theme**: `catppuccin-mocha`, with a **transparent background** (floats too).
-- **Switch**: `<leader>tc` opens a Snacks picker with live preview. The choice is written to
-  `stdpath('state')/colorscheme` and restored on next start. If the saved theme fails to load, the
-  default is used.
+- **Theme**: fixed to `catppuccin-mocha`, with a **transparent background** (floats too). There is no
+  theme switcher; change `colorscheme.lua` to use another theme.
 - **Undercurl**: a `ColorScheme` autocmd rewrites every `DiagnosticUnderline*` group to use undercurl
-  instead of underline, so it applies to any theme.
+  instead of underline.
 - **Catppuccin integrations**: blink.cmp, Mason, and a lualine override that keeps the statusline's
   middle section solid (`mantle`) despite transparency.
-- Other themes: tokyonight (`night`), kanagawa, gruvbox, solarized-osaka (transparent).
 
 ## ui.lua
 
@@ -57,7 +93,7 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 
 `Snacks.bufdelete` is also used everywhere a buffer is closed so the window layout is kept.
 
-### bufferline.nvim
+## bufferline.lua
 
 VSCode-like tab bar of open buffers:
 - Close / right-click close through `Snacks.bufdelete`.
@@ -65,7 +101,7 @@ VSCode-like tab bar of open buffers:
 - Offsets itself next to the Snacks explorer with an "Explorer" title.
 - Always visible, even with one buffer.
 
-### which-key.nvim
+## which-key.lua
 
 `modern` preset. Named groups: `b` buffer, `c` code, `d` diagnostics, `f` find, `g` git,
 `s` split/session, `t` tab/toggle.
@@ -101,13 +137,16 @@ Also sets `showmode = false` since the mode is in the statusline.
 
 ## editor.lua
 
-- **nvim-autopairs** with `check_ts = true` (treesitter-aware, e.g. no pairing inside strings).
 - **ts-comments.nvim** — makes the built-in `gc` / `Ctrl+/` use the right comment syntax inside JSX.
 - **gitsigns.nvim** — signs in the gutter; inline blame is off by default (`<leader>tb`). Buffer-local
   hunk keymaps are defined in `on_attach` (see [keymaps.md](keymaps.md#git--leaderg-gitsigns-git-buffers-only)).
 - **trouble.nvim** — problems panel (`<leader>dp`, `<leader>db`) and symbols outline (`<leader>ds`).
+  Set up the first time `:Trouble` runs (a stub command created with `lazy.cmd`).
 
-## completion.lua (blink.cmp)
+## completion.lua (blink.cmp, autopairs)
+
+- **nvim-autopairs** with `check_ts = true` (treesitter-aware, e.g. no pairing inside strings).
+- **blink.cmp**:
 
 | Setting | Value | Purpose |
 | --- | --- | --- |
@@ -120,7 +159,8 @@ Also sets `showmode = false` since the mode is in the statusline.
 | `sources` | `lsp, path, snippets, buffer` | Snippets come from friendly-snippets |
 | `fuzzy` | `prefer_rust_with_warning` | Uses the prebuilt Rust matcher (needs the `1.*` version tag) |
 
-blink's LSP capabilities are passed to every server in `lsp.lua`.
+blink's `plugin/` file adds its completion capabilities to every server (`vim.lsp.config('*')`), so
+`lsp.lua` `:packadd`s blink.cmp before enabling servers.
 
 ## lsp.lua, format.lua, lint.lua
 

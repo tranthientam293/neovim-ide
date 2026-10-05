@@ -1,7 +1,6 @@
+-- Loaded when the first file is opened
 local map = vim.keymap.set
-
--- Auto close brackets and quotes
-require('nvim-autopairs').setup({ check_ts = true })
+local lazy = require('core.lazy')
 
 -- Built-in `gc` commenting, made JSX/TSX aware
 require('ts-comments').setup({})
@@ -25,8 +24,10 @@ require('gitsigns').setup({
   end,
 })
 
--- Problems panel (VSCode: Ctrl+Shift+M) ------------------------------------------
-require('trouble').setup({})
+-- Problems panel (VSCode: Ctrl+Shift+M), set up on first :Trouble ---------------------
+lazy.cmd('Trouble', function()
+  require('trouble').setup({})
+end)
 map('n', '<leader>dp', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Problems (workspace)' })
 map('n', '<leader>db', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', { desc = 'Problems (buffer)' })
 map('n', '<leader>ds', '<cmd>Trouble symbols toggle focus=false<cr>', { desc = 'Outline (symbols)' })

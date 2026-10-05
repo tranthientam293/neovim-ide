@@ -25,8 +25,8 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `Shift+F12` | n | Find references | plugins/lsp |
 | `Ctrl+.` | n, v | Code action | plugins/lsp |
 | `Ctrl+Shift+o` | n | Document symbols | plugins/lsp |
-| `Alt+1` … `Alt+9` | n | Go to buffer tab N | plugins/ui |
-| `Tab` / `Shift+Tab` | n | Next / previous buffer tab | plugins/ui |
+| `Alt+1` … `Alt+9` | n | Go to buffer tab N | plugins/bufferline |
+| `Tab` / `Shift+Tab` | n | Next / previous buffer tab | plugins/bufferline |
 
 > Note: `Ctrl+s` in insert mode saves the file, which overrides Neovim's built-in insert-mode
 > signature help. Signature help still appears automatically via blink.cmp while typing.
@@ -102,7 +102,6 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `<leader>tx` | Close tab page |
 | `<leader>tn` / `<leader>tp` | Next / previous tab page |
 | `<leader>tt` | Toggle terminal |
-| `<leader>tc` | Switch colorscheme (live preview, remembered) |
 | `<leader>th` | Toggle inlay hints (LSP buffers) |
 | `<leader>tb` | Toggle inline git blame (git buffers) |
 
