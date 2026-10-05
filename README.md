@@ -1,4 +1,4 @@
-# neovim-ide
+# Neovim IDE
 
 A lightweight, VSCode-flavoured Neovim configuration for **JavaScript / TypeScript** and **Lua**,
 built only on Neovim's native features: the built-in plugin manager (`vim.pack`) and the built-in
