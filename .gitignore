@@ -1,0 +1,25 @@
+# Neovim
+.session.vim
+Session.vim
+*.swp
+*.swo
+*~
+.netrwhist
+tags
+
+# Local, machine-specific overrides
+lua/local.lua
+.nvim.lua
+
+# Logs / tmp
+*.log
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
