@@ -6,6 +6,8 @@ vim.pack.add({
   'https://github.com/akinsho/bufferline.nvim',
   'https://github.com/folke/which-key.nvim',
   'https://github.com/folke/snacks.nvim', -- picker, explorer, terminal, indent guides, notifications
+  'https://github.com/folke/noice.nvim', -- floating command line, messages
+  'https://github.com/MunifTanjim/nui.nvim', -- UI components used by noice
 
   -- Syntax (treesitter)
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
@@ -35,6 +37,7 @@ vim.pack.add({
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.*') }, -- plugins/lsp.lua
   'https://github.com/rafamadriz/friendly-snippets', -- plugins/completion.lua
   'https://github.com/windwp/nvim-ts-autotag', -- plugins/treesitter.lua: auto close/rename JSX/HTML tags
+  'https://github.com/MeanderingProgrammer/render-markdown.nvim', -- plugins/markdown.lua
 }, { load = function() end })
 
 -- Plugins in the first list are on the runtimepath now; their setup is spread over startup so the first screen
@@ -53,6 +56,7 @@ vim.o.tabline = ' '
 lazy.after_ui('plugins.statusline')
 lazy.after_ui('plugins.bufferline')
 lazy.after_ui('plugins.which-key')
+lazy.after_ui('plugins.noice')
 
 -- 3. When the first file is opened (BufReadPre fires for `nvim file` too, so nothing is missed)
 local load_file_plugins = lazy.once(function()
@@ -67,3 +71,12 @@ lazy.cmd('Mason', load_file_plugins)
 
 -- 4. On first insert / command line
 lazy.on({ 'InsertEnter', 'CmdlineEnter' }, 'plugins.completion')
+
+-- 5. On the first markdown buffer
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  once = true,
+  callback = function()
+    require('plugins.markdown')
+  end,
+})

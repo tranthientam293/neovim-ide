@@ -69,6 +69,7 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `<leader>f/` | Search lines in current buffer |
 | `<leader>fR` | Resume last picker |
 | `<leader>fn` | Notification history |
+| `<leader>fm` | Message history (Noice) |
 | `<leader>fs` | Document symbols (LSP) |
 | `<leader>fS` | Workspace symbols (LSP) |
 | `<leader>e` | Toggle file explorer |
@@ -164,6 +165,13 @@ Active once a language server attaches. Results open in a Snacks picker with pre
 | `<leader>gb` | Blame current line |
 | `<leader>gd` | Diff against index |
 | `<leader>tb` | Toggle inline blame |
+
+## Markdown — `<leader>m` (markdown buffers only)
+
+| Keys | Action |
+| --- | --- |
+| `<leader>mp` | Toggle preview / raw |
+| `<leader>ms` | Preview in a side split |
 
 ## Completion (insert mode, blink.cmp)
 

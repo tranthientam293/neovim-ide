@@ -13,6 +13,7 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 | lualine.nvim | Statusline | `statusline.lua` | after first frame |
 | bufferline.nvim | Buffers shown as tabs | `bufferline.lua` | after first frame |
 | which-key.nvim | Keymap hints popup | `which-key.lua` | after first frame |
+| noice.nvim, nui.nvim | Floating command line, messages | `noice.lua` | after first frame |
 | nvim-treesitter (`main`) | Parsers, highlighting, indent, folds | `treesitter.lua` | first file |
 | nvim-treesitter-context | Sticky scroll | `treesitter.lua` | first file |
 | nvim-ts-autotag | Auto close/rename HTML/JSX tags | `treesitter.lua` | first file (`:packadd`) |
@@ -26,6 +27,7 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 | blink.cmp (`1.*`) | Completion | `completion.lua` | `:packadd` on first file (LSP capabilities), setup on first insert |
 | friendly-snippets | Snippet collection | `completion.lua` | first insert (`:packadd`) |
 | nvim-autopairs | Auto-close brackets and quotes | `completion.lua` | first insert |
+| render-markdown.nvim | Markdown preview rendered in the buffer | `markdown.lua` | first markdown buffer (`:packadd`) |
 
 ## Load order
 
@@ -46,9 +48,10 @@ A *loader* is either a module name (`'plugins.statusline'`) or a function.
 | Stage | Trigger | Modules |
 | --- | --- | --- |
 | 1 | startup | `colorscheme`, `ui` (Snacks) |
-| 2 | after the first frame | `statusline`, `bufferline`, `which-key` |
+| 2 | after the first frame | `statusline`, `bufferline`, `which-key`, `noice` |
 | 3 | `BufReadPre` / `BufNewFile`, or `:Mason` | `treesitter`, `lsp`, `format`, `lint`, `editor` |
 | 4 | `InsertEnter` / `CmdlineEnter` | `completion` |
+| 5 | `FileType markdown` | `markdown` |
 
 Notes:
 - **No layout jump when stage 2 loads**: `plugins/init.lua` reserves a blank statusline and tabline at
@@ -56,7 +59,7 @@ Notes:
 - **`nvim file` still works**: `BufReadPre` fires for files given on the command line, so stage 3
   loads before that buffer's `FileType` event and treesitter, LSP and lint all attach to it. Snacks
   `quickfile` shows the file with highlighting as early as possible.
-- **Registered but not loaded**: blink.cmp, friendly-snippets and nvim-ts-autotag are added with
+- **Registered but not loaded**: blink.cmp, friendly-snippets, nvim-ts-autotag and render-markdown.nvim are added with
   `{ load = function() end }`, which keeps their `plugin/` files from running at startup. blink.cmp is
   `:packadd`ed by `lsp.lua` because its `plugin/` file adds completion capabilities to every server,
   and that has to happen before any server starts.
@@ -104,7 +107,17 @@ VSCode-like tab bar of open buffers:
 ## which-key.lua
 
 `modern` preset. Named groups: `b` buffer, `c` code, `d` diagnostics, `f` find, `g` git,
-`s` split/session, `t` tab/toggle.
+`s` split/session, `t` tab/toggle, `m` markdown.
+
+## noice.lua
+
+- **Command line**: `:` opens a floating popup in the center of the screen (Noice's default
+  `cmdline_popup` position) instead of the built-in bottom line, with completions below it. `/` and
+  `?` stay at the bottom (`bottom_search`).
+- **Messages**: `:echo`/errors show as notifications through Snacks notifier; long ones open in a split
+  (`long_message_to_split`). `<leader>fm` searches the message history.
+- **LSP**: Noice renders hover docs; its signature help is off because blink.cmp already shows it.
+- Loaded right after the first frame, so messages printed during startup still use the built-in UI.
 
 ## statusline.lua (lualine)
 
@@ -161,6 +174,18 @@ Also sets `showmode = false` since the mode is in the statusline.
 
 blink's `plugin/` file adds its completion capabilities to every server (`vim.lsp.config('*')`), so
 `lsp.lua` `:packadd`s blink.cmp before enabling servers.
+
+## markdown.lua
+
+- **render-markdown.nvim** uses extmarks and conceal to draw headings, code blocks, tables, lists,
+  checkboxes and links in the same buffer. The file on disk is never changed.
+- Rendering is on in normal mode, including the cursor line (`anti_conceal` is off). Insert mode
+  shows raw text.
+- `<leader>mp` toggles between preview and raw for every markdown buffer. `<leader>ms` opens a
+  rendered copy in a side split next to the raw buffer.
+- The plugin's `plugin/` file calls `setup(vim.g.render_markdown_config)` and then attaches to the
+  current buffer, so `markdown.lua` sets that variable before it `:packadd`s the plugin. The parsers
+  it needs (`markdown`, `markdown_inline`) come from `lua/langs/markdown.lua`.
 
 ## lsp.lua, format.lua, lint.lua
 

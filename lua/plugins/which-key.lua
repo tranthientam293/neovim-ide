@@ -7,6 +7,7 @@ wk.add({
   { '<leader>d', group = 'diagnostics' },
   { '<leader>f', group = 'find' },
   { '<leader>g', group = 'git' },
+  { '<leader>m', group = 'markdown' },
   { '<leader>s', group = 'split/session' },
   { '<leader>t', group = 'tab/toggle' },
 })
