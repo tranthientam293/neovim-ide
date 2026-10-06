@@ -13,7 +13,7 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 | lualine.nvim | Statusline | `statusline.lua` | after first frame |
 | bufferline.nvim | Buffers shown as tabs | `bufferline.lua` | after first frame |
 | which-key.nvim | Keymap hints popup | `which-key.lua` | after first frame |
-| noice.nvim, nui.nvim | Floating command line, messages | `noice.lua` | after first frame |
+| noice.nvim, nui.nvim | Floating command line with backdrop, messages | `noice.lua` | after first frame |
 | nvim-treesitter (`main`) | Parsers, highlighting, indent, folds | `treesitter.lua` | first file |
 | nvim-treesitter-context | Sticky scroll | `treesitter.lua` | first file |
 | nvim-ts-autotag | Auto close/rename HTML/JSX tags | `treesitter.lua` | first file (`:packadd`) |
@@ -114,6 +114,13 @@ VSCode-like tab bar of open buffers:
 - **Command line**: `:` opens a floating popup in the center of the screen (Noice's default
   `cmdline_popup` position) instead of the built-in bottom line, with completions below it. `/` and
   `?` stay at the bottom (`bottom_search`).
+- **Backdrop**: while the `:` popup is open, the rest of the editor is dimmed so focus stays on the
+  command line. It's a full-screen float (zindex 199) just below the popup (200); completion menus stay
+  above both. It closes on `<CR>`/`<Esc>` and follows window resizes. `/` and `?` searches aren't
+  dimmed so matches stay visible.
+  - Color: `CmdlineBackdrop` highlight, `#11111b` (catppuccin mocha crust, softer than black). Set
+    with `default = true`, so a colorscheme or your own `nvim_set_hl` can override it.
+  - Strength: `winblend = 95` (5% opacity). Lower is darker: `0` is solid, `100` is no dimming.
 - **Messages**: `:echo`/errors show as notifications through Snacks notifier; long ones open in a split
   (`long_message_to_split`). `<leader>fm` searches the message history.
 - **LSP**: Noice renders hover docs; its signature help is off because blink.cmp already shows it.
