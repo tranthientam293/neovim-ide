@@ -16,7 +16,7 @@ vim.keymap.set('n', '<leader>fm', '<cmd>Noice pick<cr>', { desc = 'Message histo
 -- A full-screen float just under Noice's cmdline_popup (zindex 200); completion menus sit above both.
 local backdrop = { win = nil, buf = nil }
 local group = vim.api.nvim_create_augroup('CmdlineBackdrop', { clear = true })
-vim.api.nvim_set_hl(0, 'CmdlineBackdrop', { bg = '#313244', default = true }) -- catppuccin mocha crust: softer than black
+vim.api.nvim_set_hl(0, 'CmdlineBackdrop', { bg = '#1e1e2e', default = true })
 
 local function close_backdrop()
   if backdrop.win and vim.api.nvim_win_is_valid(backdrop.win) then
@@ -45,7 +45,7 @@ local function open_backdrop()
     zindex = 199,
     noautocmd = true,
   })
-  vim.wo[backdrop.win].winblend = 40 -- 60% opacity (0 = solid, 100 = no dimming)
+  vim.wo[backdrop.win].winblend = 40 -- 40% opacity (0 = solid, 100 = no dimming)
   vim.wo[backdrop.win].winhighlight = 'Normal:CmdlineBackdrop,NormalFloat:CmdlineBackdrop'
 end
 
