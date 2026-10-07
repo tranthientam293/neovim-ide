@@ -4,6 +4,7 @@ require('noice').setup({
   presets = {
     bottom_search = true, -- / and ? stay at the bottom like the built-in search
     long_message_to_split = true, -- long messages open in a split instead of a popup
+    lsp_doc_border = true, -- border on Noice's hover (K) popup, matching vim.o.winborder floats
   },
   lsp = {
     signature = { enabled = false }, -- blink.cmp already shows signature help
