@@ -3,6 +3,7 @@ require('catppuccin').setup({
   flavour = 'mocha',
   transparent_background = true,
   float = { transparent = true }, -- file explorer, pickers and popups too (borders keep them distinct)
+  no_italic = true,
   integrations = {
     blink_cmp = true,
     mason = true,
