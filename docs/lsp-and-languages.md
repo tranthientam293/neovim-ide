@@ -68,6 +68,27 @@ don't break startup), concatenates lists (deduplicated and sorted) and merges th
 - `format = false` — formatting is Prettier's job, ESLint only reports/fixes lint issues.
 - Keeps nvim-lspconfig's own `on_attach` (which defines `:LspEslintFixAll`) and adds `<leader>ce`.
 
+### Go — `langs/go.lua`
+
+| Kind | Value |
+| --- | --- |
+| Server | `gopls` |
+| Formatter | `goimports` (add/remove imports) then `gofumpt` (stricter `gofmt`) |
+| Linter | `golangcilint` via nvim-lint — uses the project's `.golangci.yml`, else golangci-lint defaults |
+| Tools | `goimports`, `gofumpt`, `golangci-lint` |
+| Parsers | `go`, `gomod`, `gosum`, `gowork`, `gotmpl` |
+
+Mason builds these with `go install`, so the Go toolchain must be on `PATH`.
+
+`after/lsp/gopls.lua` mirrors VSCode Go's `gopls` settings:
+- `gofumpt = true` so gopls' own edits match the conform formatter.
+- Placeholders on function completion; completion of unimported packages.
+- `staticcheck` plus extra analyses: `nilness`, `unusedparams`, `unusedwrite`, `useany`, `shadow`.
+- Codelenses (shown after `<leader>cl`): run/debug test, `go generate`, `go mod tidy`, upgrade
+  dependency, vendor.
+- All inlay hints enabled server-side (shown after `<leader>th`).
+- Buffer keymap: `<leader>co` organize imports.
+
 ## lsp.lua
 
 Loaded when the first file is opened, or on `:Mason` (see [Plugins → Load order](plugins.md#load-order)).
@@ -100,8 +121,8 @@ Loaded when the first file is opened, or on `:Mason` (see [Plugins → Load orde
 
 ## lint.lua (nvim-lint)
 
-- `linters_by_ft` comes from the language registry (currently empty — JS/TS linting is done by the
-  ESLint language server).
+- `linters_by_ft` comes from the language registry (currently `golangcilint` for Go — JS/TS linting is
+  done by the ESLint language server).
 - Runs on `BufReadPost`, `BufWritePost` and `InsertLeave`.
 
 ## Adding a language

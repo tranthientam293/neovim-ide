@@ -1,6 +1,6 @@
 # Neovim Config — Documentation
 
-A VSCode-flavoured Neovim setup focused on **JavaScript / TypeScript** and **Lua**, built on Neovim's
+A VSCode-flavoured Neovim setup focused on **JavaScript / TypeScript**, **Go** and **Lua**, built on Neovim's
 native plugin manager (`vim.pack`) and native LSP client (`vim.lsp.config` / `vim.lsp.enable`).
 
 ## Purpose
@@ -54,6 +54,7 @@ nvim/
 │   │   └── lazy.lua         Lazy-loading helpers (on event, after UI, stub command, packadd)
 │   ├── langs/
 │   │   ├── init.lua         Registry: merges every language spec in this folder
+│   │   ├── go.lua           Go: gopls + goimports/gofumpt + golangci-lint
 │   │   ├── lua.lua          Lua: lua_ls + stylua
 │   │   └── typescript.lua   JS/TS: vtsls + eslint + prettier
 │   └── plugins/

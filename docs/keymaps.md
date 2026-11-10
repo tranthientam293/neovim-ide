@@ -115,7 +115,7 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `<leader>cf` | Format buffer/selection (n, v) | everywhere |
 | `<leader>cl` | Toggle codelens | any LSP buffer |
 | `<leader>cr` | Restart LSP | any LSP buffer |
-| `<leader>co` | Organize imports | TS/JS (vtsls) |
+| `<leader>co` | Organize imports | TS/JS (vtsls), Go (gopls) |
 | `<leader>cM` | Add missing imports | TS/JS (vtsls) |
 | `<leader>cu` | Remove unused imports/code | TS/JS (vtsls) |
 | `<leader>cF` | Fix all (TypeScript) | TS/JS (vtsls) |

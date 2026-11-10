@@ -1,6 +1,6 @@
 # Neovim IDE
 
-A lightweight, VSCode-flavoured Neovim configuration for **JavaScript / TypeScript** and **Lua**,
+A lightweight, VSCode-flavoured Neovim configuration for **JavaScript / TypeScript**, **Go** and **Lua**,
 built only on Neovim's native features: the built-in plugin manager (`vim.pack`) and the built-in
 LSP client (`vim.lsp.config` / `vim.lsp.enable`). No lazy.nvim, no distro.
 
