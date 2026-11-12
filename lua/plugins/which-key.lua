@@ -10,4 +10,5 @@ wk.add({
   { '<leader>m', group = 'markdown' },
   { '<leader>s', group = 'split/session' },
   { '<leader>t', group = 'tab/toggle' },
+  { 'gs', group = 'surround', mode = { 'n', 'x' } },
 })

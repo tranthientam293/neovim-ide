@@ -13,13 +13,14 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 | lualine.nvim | Statusline | `statusline.lua` | after first frame |
 | bufferline.nvim | Buffers shown as tabs | `bufferline.lua` | after first frame |
 | which-key.nvim | Keymap hints popup | `which-key.lua` | after first frame |
-| noice.nvim, nui.nvim | Floating command line with backdrop, messages | `noice.lua` | after first frame |
+| noice.nvim, nui.nvim | Notifications, hover docs | `noice.lua` | after first frame |
 | nvim-treesitter (`main`) | Parsers, highlighting, indent, folds | `treesitter.lua` | first file |
 | nvim-treesitter-context | Sticky scroll | `treesitter.lua` | first file |
 | nvim-ts-autotag | Auto close/rename HTML/JSX tags | `treesitter.lua` | first file (`:packadd`) |
 | ts-comments.nvim | Correct comment strings in JSX/TSX | `editor.lua` | first file |
 | gitsigns.nvim | Git signs, hunks, blame | `editor.lua` | first file |
 | trouble.nvim | Problems panel, symbols outline | `editor.lua` | first `:Trouble` |
+| mini.surround | Add/delete/replace surroundings (`gs` prefix) | `editor.lua` | first file |
 | mason.nvim, mason-lspconfig, mason-tool-installer | Install servers & tools | `lsp.lua` | first file or `:Mason` |
 | nvim-lspconfig | Default server configs (`lsp/<name>.lua`) | `lsp.lua` + `after/lsp/` | first file |
 | conform.nvim | Formatting | `format.lua` | first file |
@@ -111,18 +112,10 @@ VSCode-like tab bar of open buffers:
 
 ## noice.lua
 
-- **Command line**: `:` opens a floating popup in the center of the screen (Noice's default
-  `cmdline_popup` position) instead of the built-in bottom line, with completions below it. `/` and
-  `?` stay at the bottom (`bottom_search`).
-- **Backdrop**: while the `:` popup is open, the rest of the editor is dimmed so focus stays on the
-  command line. It's a full-screen float (zindex 199) just below the popup (200); completion menus stay
-  above both. It closes on `<CR>`/`<Esc>` and follows window resizes. `/` and `?` searches aren't
-  dimmed so matches stay visible.
-  - Color: `CmdlineBackdrop` highlight, `#11111b` (catppuccin mocha crust, softer than black). Set
-    with `default = true`, so a colorscheme or your own `nvim_set_hl` can override it.
-  - Strength: `winblend = 95` (5% opacity). Lower is darker: `0` is solid, `100` is no dimming.
-- **Messages**: `:echo`/errors show as notifications through Snacks notifier; long ones open in a split
-  (`long_message_to_split`). `<leader>fm` searches the message history.
+- **Command line & messages**: Neovim's built-in UI (Noice's `cmdline`, `messages` and `popupmenu` are
+  disabled; Noice forces the cmdline back on if `messages` is enabled).
+- **Notifications**: `vim.notify` goes through Noice to Snacks notifier. `<leader>fm` searches the
+  notification history.
 - **LSP**: Noice renders hover docs; its signature help is off because blink.cmp already shows it.
 - Loaded right after the first frame, so messages printed during startup still use the built-in UI.
 

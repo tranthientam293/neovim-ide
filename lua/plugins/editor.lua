@@ -5,6 +5,19 @@ local lazy = require('core.lazy')
 -- Built-in `gc` commenting, made JSX/TSX aware
 require('ts-comments').setup({})
 
+-- Surround: mapped under `gs` so the built-in `s` (substitute) keeps working ------------
+require('mini.surround').setup({
+  mappings = {
+    add = 'gsa', -- gsa{motion}{char}, or gsa{char} in visual mode
+    delete = 'gsd',
+    replace = 'gsr',
+    find = 'gsf',
+    find_left = 'gsF',
+    highlight = 'gsh',
+    update_n_lines = 'gsn',
+  },
+})
+
 -- Git gutter, hunks and inline blame (GitLens-like) --------------------------------
 require('gitsigns').setup({
   current_line_blame = false,

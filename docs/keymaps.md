@@ -53,6 +53,23 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `<leader>lw` | n | Toggle line wrap |
 | `<leader>sn` | n | Save without autocommands (no formatters/linters) |
 
+## Surround — `gs` (mini.surround)
+
+Plain `s` keeps its built-in meaning (substitute character).
+
+| Keys | Mode | Action | Example |
+| --- | --- | --- | --- |
+| `gsa{motion}{char}` | n | Add surrounding | `gsaiw"` → `"word"` |
+| `gsa{char}` | x | Surround selection | `vjgsa)` |
+| `gsd{char}` | n | Delete surrounding | `gsd"` |
+| `gsr{old}{new}` | n | Replace surrounding | `gsr"'` |
+| `gsf` / `gsF` | n | Find next / previous surrounding | `gsf)` |
+| `gsh{char}` | n | Highlight surrounding | `gsh]` |
+| `gsn` | n | Change how many lines are searched | |
+
+Characters: `(` `[` `{` `<` add inner spaces, `)` `]` `}` `>` don't; `t` is an HTML/JSX tag, `f` a
+function call, `q` any quote, `b` any bracket, `?` prompts for left/right text.
+
 ## Find — `<leader>f` (Snacks picker)
 
 | Keys | Action |
@@ -69,7 +86,7 @@ Columns: **Mode** — `n` normal, `i` insert, `v` visual+select, `x` visual, `t`
 | `<leader>f/` | Search lines in current buffer |
 | `<leader>fR` | Resume last picker |
 | `<leader>fn` | Notification history |
-| `<leader>fm` | Message history (Noice) |
+| `<leader>fm` | Notification history (Noice) |
 | `<leader>fs` | Document symbols (LSP) |
 | `<leader>fS` | Workspace symbols (LSP) |
 | `<leader>e` | Toggle file explorer |

@@ -6,7 +6,7 @@ vim.pack.add({
   'https://github.com/akinsho/bufferline.nvim',
   'https://github.com/folke/which-key.nvim',
   'https://github.com/folke/snacks.nvim', -- picker, explorer, terminal, indent guides, notifications
-  'https://github.com/folke/noice.nvim', -- floating command line, messages
+  'https://github.com/folke/noice.nvim', -- notifications, hover docs
   'https://github.com/MunifTanjim/nui.nvim', -- UI components used by noice
 
   -- Syntax (treesitter)
@@ -18,6 +18,7 @@ vim.pack.add({
   'https://github.com/folke/ts-comments.nvim', -- correct comments in JSX/TSX
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/folke/trouble.nvim', -- problems panel
+  'https://github.com/nvim-mini/mini.surround', -- add/delete/replace surroundings (gs prefix)
 
   -- LSP
   'https://github.com/mason-org/mason-lspconfig.nvim',
