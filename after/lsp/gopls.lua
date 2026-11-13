@@ -29,6 +29,7 @@ return {
         unusedwrite = true,
         useany = true,
         shadow = true,
+        rangeint = false,
       },
       codelenses = {
         generate = true,
