@@ -1,9 +1,10 @@
 -- Markdown preview rendered inside the buffer (headings, code blocks, tables, checkboxes, links).
--- Loaded on the first markdown buffer. Rendering is on in normal mode (cursor line included);
--- insert mode shows raw text. <leader>mp switches between preview and raw.
+-- Loaded on the first markdown buffer. Off by default (raw text); <leader>mp switches it on.
+-- When on, rendering applies in normal mode (cursor line included); insert mode shows raw text.
 
 -- The plugin/ file calls setup() with this table, then attaches to the current buffer.
 vim.g.render_markdown_config = {
+  enabled = false, -- start raw; <leader>mp turns the preview on
   file_types = { 'markdown' },
   anti_conceal = { enabled = false }, -- keep the cursor line rendered too
 }

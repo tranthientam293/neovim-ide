@@ -179,7 +179,8 @@ blink's `plugin/` file adds its completion capabilities to every server (`vim.ls
 
 - **render-markdown.nvim** uses extmarks and conceal to draw headings, code blocks, tables, lists,
   checkboxes and links in the same buffer. The file on disk is never changed.
-- Rendering is on in normal mode, including the cursor line (`anti_conceal` is off). Insert mode
+- Preview is off by default (`enabled = false`), so markdown opens as raw text. When turned on,
+  rendering applies in normal mode, including the cursor line (`anti_conceal` is off). Insert mode
   shows raw text.
 - `<leader>mp` toggles between preview and raw for every markdown buffer. `<leader>ms` opens a
   rendered copy in a side split next to the raw buffer.
