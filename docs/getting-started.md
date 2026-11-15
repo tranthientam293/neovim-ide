@@ -18,7 +18,7 @@ On the very first start, three things install in the background:
 | What | Where to watch it | Done when |
 | --- | --- | --- |
 | Plugins (`vim.pack`) | Messages at the bottom | Neovim opens with the catppuccin theme |
-| Language servers & formatters (Mason) | `:Mason` | `vtsls`, `eslint`, `lua_ls`, `prettierd`, `stylua` show as installed |
+| Language servers & formatters (Mason) | `:Mason` | `vtsls`, `eslint`, `oxlint`, `lua_ls`, `prettierd`, `stylua` show as installed |
 | Treesitter parsers | Notifications, top right | No more "installing" messages |
 
 Mason and treesitter only start once you open a file, or `:Mason` for Mason. Open any file, give
@@ -216,7 +216,7 @@ The statusline shows the branch and the counts of added, changed and removed lin
 
 | Symptom | Look here |
 | --- | --- |
-| A notification flashed by | `<leader>fn` (notification history) or `:messages` |
+| A notification flashed by | `<leader>fn` or `:messages` (message history) |
 | No completion / go-to-definition | Statusline LSP section; `:checkhealth vim.lsp`; `<leader>cr` restarts the server |
 | A server or formatter is missing | `:Mason` (`i` to install on a line, `g?` for help) |
 | Formatting does nothing | `:ConformInfo` lists the formatters for this file and their log |

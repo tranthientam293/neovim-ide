@@ -1,6 +1,6 @@
 -- Tailwind CSS
--- Only attaches in projects that use Tailwind (lspconfig's root_dir looks for a tailwind config
--- or `tailwindcss` in package.json / an `@import "tailwindcss"` CSS entry).
+-- Only attaches in projects that use Tailwind: a tailwind.config.* file or `tailwindcss` in a
+-- package.json (see after/lsp/tailwindcss.lua and lua/core/project.lua).
 return {
   servers = { 'tailwindcss' },
 }

@@ -48,10 +48,25 @@ don't break startup), concatenates lists (deduplicated and sorted) and merges th
 
 | Kind | Value |
 | --- | --- |
-| Servers | `vtsls` (the tsserver wrapper VSCode uses), `eslint` (vscode-eslint) |
-| Formatter | `prettierd`, falling back to `prettier` — for JS, JSX, TS, TSX, JSON(C), CSS, SCSS, HTML, Markdown, YAML |
+| Servers | `vtsls` (the tsserver wrapper VSCode uses), `eslint` (vscode-eslint), `biome`, `oxlint` |
+| Formatter | Per project: `oxfmt` (JS/TS/JSON) or `biome` (JS/TS/JSON/CSS) when configured and installed, else `prettierd` → `prettier` — for JS, JSX, TS, TSX, JSON(C), CSS, SCSS, HTML, Markdown, YAML |
 | Tools | `prettierd` |
 | Parsers | `javascript`, `typescript`, `tsx`, `jsdoc`, `json`, `css`, `scss`, `html`, `markdown`, `markdown_inline`, `yaml` |
+
+**Project detection** (`lua/core/project.lua`): a project "uses" a tool when its config file is in a
+parent directory of the buffer, or a `package.json` up the tree mentions it (search stops at the
+`.git` root).
+
+| Project has | Linter | Formatter |
+| --- | --- | --- |
+| `eslint.config.*` / `.eslintrc*` / `eslintConfig` | `eslint` | prettier |
+| `.oxlintrc.json(c)` / `oxlint.config.ts` / `oxlint` dep | `oxlint` (project config) | prettier |
+| `biome.json(c)` / `@biomejs/biome` dep | `biome` | `biome` |
+| `.oxfmtrc.json(c)` / `oxfmt.config.ts` / `oxfmt` dep | (by the rows above) | `oxfmt` |
+| nothing | `oxlint` with its default rules | `prettierd` → `prettier` |
+
+ESLint and Oxlint can both attach when both are configured. A formatter that is configured but not
+installed (e.g. `oxfmt` missing from `node_modules`) falls back to prettier.
 
 `after/lsp/vtsls.lua` mirrors VSCode's `typescript.*` / `javascript.*` settings:
 - Update imports on file move: always.
@@ -67,6 +82,12 @@ don't break startup), concatenates lists (deduplicated and sorted) and merges th
 `after/lsp/eslint.lua`:
 - `format = false` — formatting is Prettier's job, ESLint only reports/fixes lint issues.
 - Keeps nvim-lspconfig's own `on_attach` (which defines `:LspEslintFixAll`) and adds `<leader>ce`.
+
+`after/lsp/oxlint.lua`:
+- Default linter: attaches at the config dir in oxlint projects, at the project root (default rules)
+  when no linter is configured, and not at all in ESLint/Biome projects. Uses the project's
+  `node_modules/.bin/oxlint` when present, else the Mason one.
+- Keeps nvim-lspconfig's own `on_attach` (which defines `:LspOxlintFixAll`) and adds `<leader>cx`.
 
 ### Go — `langs/go.lua`
 
@@ -122,7 +143,7 @@ Loaded when the first file is opened, or on `:Mason` (see [Plugins → Load orde
 ## lint.lua (nvim-lint)
 
 - `linters_by_ft` comes from the language registry (currently `golangcilint` for Go — JS/TS linting is
-  done by the ESLint language server).
+  done by the ESLint and Oxlint language servers).
 - Runs on `BufReadPost`, `BufWritePost` and `InsertLeave`.
 
 ## Adding a language

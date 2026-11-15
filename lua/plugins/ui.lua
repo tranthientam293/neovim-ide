@@ -1,6 +1,6 @@
 local map = vim.keymap.set
 
--- Snacks: file picker, explorer sidebar, terminal, indent guides, notifications --------
+-- Snacks: file picker, explorer sidebar, terminal, indent guides --------
 require('snacks').setup({
   bigfile = { enabled = true },
   quickfile = { enabled = true },
@@ -10,18 +10,7 @@ require('snacks').setup({
     scope = { char = '▏' },
   },
   input = { enabled = true },
-  notifier = {
-    enabled = true,
-    -- Extra space after each icon: Nerd Font glyphs are wider than one cell in
-    -- Windows Terminal and get clipped by the next character otherwise.
-    icons = {
-      error = '  ',
-      warn = '  ',
-      info = '  ',
-      debug = '  ',
-      trace = '  ',
-    },
-  },
+  notifier = { enabled = false }, -- no popups: vim.notify messages go to the message area / :messages
   explorer = { enabled = true, replace_netrw = true },
   terminal = { enabled = true },
   picker = {
@@ -58,4 +47,4 @@ map('n', '<leader>fk', picker('keymaps'), { desc = 'Keymaps' })
 map('n', '<leader>fh', picker('help'), { desc = 'Help pages' })
 map('n', '<leader>f/', picker('lines'), { desc = 'Search in buffer' })
 map('n', '<leader>fR', picker('resume'), { desc = 'Resume last search' })
-map('n', '<leader>fn', function() Snacks.notifier.show_history() end, { desc = 'Notification history' })
+map('n', '<leader>fn', '<cmd>messages<cr>', { desc = 'Message history' })

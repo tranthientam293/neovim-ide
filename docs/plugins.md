@@ -8,7 +8,7 @@ commits are pinned in `nvim-pack-lock.json`. Each group is configured in its own
 | Plugin | Purpose | Configured in | Loaded |
 | --- | --- | --- | --- |
 | catppuccin | Colorscheme (mocha) | `colorscheme.lua` | startup |
-| snacks.nvim | Picker, explorer, terminal, indent guides, notifications, input, big-file handling | `ui.lua` | startup |
+| snacks.nvim | Picker, explorer, terminal, indent guides, input, big-file handling | `ui.lua` | startup |
 | nvim-web-devicons | File-type icons | (used by others) | startup |
 | lualine.nvim | Statusline | `statusline.lua` | after first frame |
 | bufferline.nvim | Buffers shown as tabs | `bufferline.lua` | after first frame |
@@ -90,7 +90,7 @@ Notes:
 | `quickfile` | Renders the file before plugins finish loading when opening `nvim file` |
 | `indent` | Indent guides + current scope, thin `▏` character |
 | `input` | Nicer `vim.ui.input` (e.g. rename prompt) |
-| `notifier` | Toast notifications; icons padded with an extra space so Nerd Font glyphs aren't clipped in Windows Terminal |
+| `notifier` | Disabled — no notification popups |
 | `explorer` | File tree sidebar, replaces netrw; shows hidden **and** gitignored files (dimmed) |
 | `terminal` | Floating/split terminal toggle |
 | `picker` | Fuzzy finder; `files` and `grep` include dotfiles but respect `.gitignore` |
@@ -114,8 +114,8 @@ VSCode-like tab bar of open buffers:
 
 - **Command line & messages**: Neovim's built-in UI (Noice's `cmdline`, `messages` and `popupmenu` are
   disabled; Noice forces the cmdline back on if `messages` is enabled).
-- **Notifications**: `vim.notify` goes through Noice to Snacks notifier. `<leader>fm` searches the
-  notification history.
+- **Notifications**: off. `vim.notify` uses the built-in message area; `<leader>fn` / `:messages`
+  shows the history.
 - **LSP**: Noice renders hover docs; its signature help is off because blink.cmp already shows it.
 - Loaded right after the first frame, so messages printed during startup still use the built-in UI.
 

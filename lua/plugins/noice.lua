@@ -1,6 +1,7 @@
--- Noice: only notifications (shown through Snacks notifier) and LSP hover docs. The command line and
--- messages use Neovim's built-in UI. Loaded right after the first screen is drawn.
+-- Noice: only LSP hover docs and LSP progress. Notifications, the command line and messages use
+-- Neovim's built-in UI. Loaded right after the first screen is drawn.
 require('noice').setup({
+  notify = { enabled = false }, -- no notification popups; vim.notify uses the built-in message area
   cmdline = { enabled = false }, -- built-in command line at the bottom
   messages = { enabled = false }, -- built-in message area (Noice re-enables cmdline if this is on)
   popupmenu = { enabled = false }, -- built-in completion menu for the command line
@@ -16,5 +17,3 @@ require('noice').setup({
     mini = { position = { row = -2 } },
   },
 })
-
-vim.keymap.set('n', '<leader>fm', '<cmd>Noice pick<cr>', { desc = 'Notification history' })

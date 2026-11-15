@@ -31,7 +31,7 @@ native plugin manager (`vim.pack`) and native LSP client (`vim.lsp.config` / `vi
 | A **Nerd Font** in the terminal | Icons in diagnostics, statusline, bufferline, explorer |
 | `git` | `vim.pack` clones plugins; gitsigns |
 | `tree-sitter` CLI + a C compiler | `nvim-treesitter` (main branch) compiles parsers locally |
-| Node.js | `vtsls`, `eslint`, `prettierd` (installed by Mason) |
+| Node.js | `vtsls`, `eslint`, `oxlint`, `prettierd` (installed by Mason) |
 | `ripgrep` (`rg`) | Snacks grep picker |
 | A truecolor terminal (e.g. Windows Terminal) | `termguicolors`, transparent theme, undercurl |
 
@@ -56,11 +56,11 @@ nvim/
 │   │   ├── init.lua         Registry: merges every language spec in this folder
 │   │   ├── go.lua           Go: gopls + goimports/gofumpt + golangci-lint
 │   │   ├── lua.lua          Lua: lua_ls + stylua
-│   │   └── typescript.lua   JS/TS: vtsls + eslint + prettier
+│   │   └── typescript.lua   JS/TS: vtsls + eslint + oxlint + prettier
 │   └── plugins/
 │       ├── init.lua         vim.pack.add({...}) + decides when each plugin module loads
 │       ├── colorscheme.lua  catppuccin mocha (transparent), undercurl diagnostics
-│       ├── ui.lua           Snacks (picker/explorer/terminal/notifications)
+│       ├── ui.lua           Snacks (picker/explorer/terminal)
 │       ├── bufferline.lua   Buffer tabs
 │       ├── which-key.lua    Keymap hints
 │       ├── statusline.lua   lualine
@@ -73,7 +73,8 @@ nvim/
 ├── after/lsp/
 │   ├── lua_ls.lua           Per-server overrides, merged on top of nvim-lspconfig
 │   ├── vtsls.lua
-│   └── eslint.lua
+│   ├── eslint.lua
+│   └── oxlint.lua
 └── docs/                    This documentation
 ```
 

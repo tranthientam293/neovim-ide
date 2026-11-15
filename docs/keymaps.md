@@ -85,8 +85,7 @@ function call, `q` any quote, `b` any bracket, `?` prompts for left/right text.
 | `<leader>fh` | Help pages |
 | `<leader>f/` | Search lines in current buffer |
 | `<leader>fR` | Resume last picker |
-| `<leader>fn` | Notification history |
-| `<leader>fm` | Notification history (Noice) |
+| `<leader>fn` | Message history (`:messages`) |
 | `<leader>fs` | Document symbols (LSP) |
 | `<leader>fS` | Workspace symbols (LSP) |
 | `<leader>e` | Toggle file explorer |
@@ -138,6 +137,7 @@ function call, `q` any quote, `b` any bracket, `?` prompts for left/right text.
 | `<leader>cF` | Fix all (TypeScript) | TS/JS (vtsls) |
 | `<leader>cV` | Select TypeScript version | TS/JS (vtsls) |
 | `<leader>ce` | ESLint: fix all | eslint buffers |
+| `<leader>cx` | Oxlint: fix all | oxlint buffers |
 
 ## LSP navigation
 

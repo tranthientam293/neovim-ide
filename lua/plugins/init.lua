@@ -5,8 +5,8 @@ vim.pack.add({
   'https://github.com/nvim-tree/nvim-web-devicons',
   'https://github.com/akinsho/bufferline.nvim',
   'https://github.com/folke/which-key.nvim',
-  'https://github.com/folke/snacks.nvim', -- picker, explorer, terminal, indent guides, notifications
-  'https://github.com/folke/noice.nvim', -- notifications, hover docs
+  'https://github.com/folke/snacks.nvim', -- picker, explorer, terminal, indent guides
+  'https://github.com/folke/noice.nvim', -- LSP hover docs, LSP progress
   'https://github.com/MunifTanjim/nui.nvim', -- UI components used by noice
 
   -- Syntax (treesitter)
@@ -47,7 +47,7 @@ local lazy = require('core.lazy')
 
 -- 1. Needed for the first screen
 require('plugins.colorscheme')
-require('plugins.ui') -- snacks: picker, explorer, quickfile, notifications
+require('plugins.ui') -- snacks: picker, explorer, quickfile
 
 -- 2. Right after the first screen is drawn. Reserve their lines now so the layout doesn't jump.
 vim.o.laststatus = 3
