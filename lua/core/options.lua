@@ -33,7 +33,7 @@ vim.o.backspace = 'indent,eol,start'
 vim.o.pumheight = 10
 vim.o.conceallevel = 0
 vim.o.fileencoding = 'utf-8'
--- vim.o.cmdheight = 1
+vim.opt.fileformat = "unix"
 vim.o.autoindent = true
 vim.opt.shortmess:append('c')
 vim.opt.iskeyword:append('-')
